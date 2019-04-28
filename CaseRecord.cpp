@@ -17,12 +17,15 @@ private:
 	char timestamp_arr[30];
 	time_t now;
 	int count;
+	string record_number_list[100];
+	int address_list[100];
 public:
 	void read_data();
 	void pack();
 	void write_to_file();
-
+	string extract_record_number();
 	void disp();
+	void create_index();
 	void remove(string);
 	void delete_from_file(int);
 	void search(string);
@@ -33,6 +36,7 @@ public:
 public:
 	CaseRecord(string, string, string, string, string);
 };
+
 void CaseRecord::read_data()
 {
 	cout << "Record Title:";
@@ -65,6 +69,17 @@ void CaseRecord::write_to_file()
 	timestamp_list[++count] = timestamp;
 	address_list[count] = pos;
 	sort_index();
+}
+string CaseRecord::extract_record_number()
+{
+
+	string record_number;
+	int i = 0;
+
+	record_number.erase();
+	while (buffer[i] != '|')
+		record_number += buffer[i++];
+	return record_number;
 }
 void CaseRecord::sort_index()
 {
@@ -112,6 +127,26 @@ int CaseRecord::search_index(string key)
 	else
 		return -1;
 }
+void CaseRecord::search(string key)
+{
+	int pos = 0, address;
+	fstream file;
+	buffer.erase();
+	pos = search_index(key);
+	if (pos == -1)
+		cout << endl
+			 << "Record not found" << endl;
+	else if (pos >= 0)
+	{
+		file.open("5.txt");
+		address = address_list[pos];
+		file.seekp(address, ios::beg);
+		getline(file, buffer);
+		cout << "Record found....\n"
+			 << buffer;
+		file.close();
+	}
+}
 void CaseRecord::delete_from_file(int pos)
 {
 	int i, address;
@@ -128,4 +163,56 @@ void CaseRecord::delete_from_file(int pos)
 		address_list[i] = address_list[i + 1];
 	}
 	count--;
+}
+
+void CaseRecord::create_index()
+{
+	fstream file;
+	int pos;
+	string rec_num;
+	count = -1;
+	file.open("case_record.txt", ios::in);
+	while (!file.eof())
+	{
+		pos = file.tellg();
+		buffer.erase();
+		getline(file, buffer);
+
+		if (buffer[0] != '*')
+		{
+			if (buffer.empty())
+				break;
+
+			rec_num = extract_record_number();
+			record_number_list[++count] = rec_num;
+			address_list[count] = pos;
+		}
+	}
+	file.close();
+	sort_index();
+	buffer.erase();
+}
+void CaseRecord::remove(string key)
+{
+	int pos = 0, i, address;
+	fstream file;
+	pos = search_index(key);
+	if (pos >= 0)
+	{
+		file.open("5.txt", ios::out | ios::in);
+		address = address_list[pos];
+		file.seekp(address, ios::beg);
+		file.put('*');
+		file.close();
+		cout << "\nRecord Deleted: ";
+
+		for (i = pos; i < count; i++)
+		{
+			record_number_list[i] = record_number_list[i + 1];
+			address_list[i] = address_list[i + 1];
+		}
+		count--;
+	}
+	else
+		cout << "Record not found\n";
 }
