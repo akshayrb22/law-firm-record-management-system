@@ -1,7 +1,1 @@
-.vscode/c_cpp_properties.json
-.vscode/launch.json
-.vscode/tasks.json
-.vscode/ipch/62711add8a9143fe/CaseRecord.ipch
-.vscode/ipch/62711add8a9143fe/mmap_address.bin
-.vscode/ipch/9bf51bbd54d0dc23/mmap_address.bin
-.vscode/ipch/9bf51bbd54d0dc23/test.ipch
+.vscode/*
