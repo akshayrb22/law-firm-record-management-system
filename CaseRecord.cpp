@@ -1,7 +1,7 @@
-#include<iostream>
-#include<string.h>
+#include <iostream>
+#include <string.h>
 #include <ctime>
-#include<fstream>
+#include <fstream>
 using namespace std;
 class CaseRecord
 {
@@ -19,11 +19,12 @@ private:
 	int count;
 	string record_number_list[100];
 	int address_list[100];
+
 public:
 	void read_data();
 	void pack();
 	void write_to_file();
-	string extract_record_number();
+	string extract_timestamp();
 	void disp();
 	void create_index();
 	void remove(string);
@@ -49,13 +50,12 @@ void CaseRecord::read_data()
 	cin >> description;
 	now = time(0);
 	timestamp = to_string(now);
-
 }
 
 void CaseRecord::pack()
 {
 	buffer.erase();
-	buffer += timestamp + "|" + record_title + "|" + record_number + "|" + lawyer + "|" + description + "$\n";
+	buffer += timestamp + "|" + record_number + "|" + record_title + "|" + lawyer + "|" + description + "$\n";
 }
 
 void CaseRecord::write_to_file()
@@ -70,16 +70,16 @@ void CaseRecord::write_to_file()
 	address_list[count] = pos;
 	sort_index();
 }
-string CaseRecord::extract_record_number()
+string CaseRecord::extract_timestamp()
 {
 
-	string record_number;
+	string timestamp;
 	int i = 0;
 
-	record_number.erase();
+	timestamp.erase();
 	while (buffer[i] != '|')
-		record_number += buffer[i++];
-	return record_number;
+		timestamp += buffer[i++];
+	return timestamp;
 }
 void CaseRecord::sort_index()
 {
@@ -169,7 +169,7 @@ void CaseRecord::create_index()
 {
 	fstream file;
 	int pos;
-	string rec_num;
+	string time_stamp;
 	count = -1;
 	file.open("case_record.txt", ios::in);
 	while (!file.eof())
@@ -183,8 +183,8 @@ void CaseRecord::create_index()
 			if (buffer.empty())
 				break;
 
-			rec_num = extract_record_number();
-			record_number_list[++count] = rec_num;
+			time_stamp = extract_timestamp();
+			timestamp_list[++count] = time_stamp;
 			address_list[count] = pos;
 		}
 	}

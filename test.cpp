@@ -1,5 +1,5 @@
 #include <ctime>
-#include <string>
+#include <string.h>
 #include <iostream>
 #include <typeinfo>
 using namespace std;
@@ -9,6 +9,8 @@ int main(int argc, char const *argv[])
 	time_t now = time(0);
 	cout << now << endl;
 	cout << typeid(now).name() << endl;
+	// cout << strcmp("Ashik", "");
+
 	// tm * current_tm = localtime(&current_time);
 	// strftime(timestamp_arr, 50, "%D", current_tm);
 	// cout << current_tm->tm_year << " / " << current_tm->tm_mon << " / " << current_tm->tm_wday;
