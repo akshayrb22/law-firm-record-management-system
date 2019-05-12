@@ -6,9 +6,9 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
 	// char timestamp_arr[1s
-	time_t now = time(0);
-	cout << now << endl;
-	cout << typeid(now).name() << endl;
+	// time_t now = time(0);
+	// cout << now << endl;
+	// cout << typeid(now).name() << endl;
 	// cout << strcmp("Ashik", "");
 
 	// tm * current_tm = localtime(&current_time);
@@ -18,4 +18,7 @@ int main(int argc, char const *argv[])
 	// char *dt = ctime(&now); // convert in string form
 	// string timestamp = to_string(now);
 	// cout << "Local date and time is:-\n\t\t" << dt << "\n";
+	string my_string;
+	getline(cin, my_string);
+	cout << my_string;
 }

@@ -1,30 +1,34 @@
-#include <iostream>
-#include <string.h>
 #include <ctime>
 #include <fstream>
+#include <iostream>
+#include <string.h>
 using namespace std;
+
+namespace LawFirm
+{
 class CaseRecord
 {
 private:
 	string record_title;
 	string record_number;
 	string lawyer;
-	string timestamp;
+	// string timestamp;
 	string description;
-	string timestamp_list[100];
+	// string timestamp_list[100];
 	int address_list[100];
 	string buffer;
 	char timestamp_arr[30];
 	time_t now;
 	int count;
 	string record_number_list[100];
-	int address_list[100];
+	string lawyer_name_list[100];
 
 public:
 	void read_data();
 	void pack();
 	void write_to_file();
-	string extract_timestamp();
+	void unpack();
+	void extract_lawyer();
 	void disp();
 	void create_index();
 	void remove(string);
@@ -33,29 +37,27 @@ public:
 	int search_index(string);
 	void read_from_file(int);
 	void sort_index();
-
-public:
-	CaseRecord(string, string, string, string, string);
 };
 
 void CaseRecord::read_data()
 {
-	cout << "Record Title:";
-	cin >> record_title;
-	cout << "Record Number:";
-	cin >> record_number;
-	cout << "Lawyer:";
-	cin >> lawyer;
-	cout << "Description:";
-	cin >> description;
-	now = time(0);
-	timestamp = to_string(now);
+	cin.ignore();
+	cout << "Record Number: ";
+	getline(cin, record_number, '\n');
+	cout << "Record Title: ";
+	getline(cin, record_title, '\n');
+	cout << "Lawyer: ";
+	getline(cin, lawyer, '\n');
+	cout << "Description: ";
+	getline(cin, description, '\n');
+	// now = time(0);
+	// timestamp = to_string(now);
 }
 
 void CaseRecord::pack()
 {
 	buffer.erase();
-	buffer += timestamp + "|" + record_number + "|" + record_title + "|" + lawyer + "|" + description + "$\n";
+	buffer += record_number + "|" + record_title + "|" + lawyer + "|" + description + "$\n";
 }
 
 void CaseRecord::write_to_file()
@@ -66,35 +68,59 @@ void CaseRecord::write_to_file()
 	pos = file.tellp();
 	file << buffer;
 	file.close();
-	timestamp_list[++count] = timestamp;
+	record_number_list[++count] = record_number;
 	address_list[count] = pos;
+	lawyer_name_list[count] = lawyer;
 	sort_index();
 }
-string CaseRecord::extract_timestamp()
+void CaseRecord::unpack()
 {
+	int ch = 1, i = 0;
 
-	string timestamp;
-	int i = 0;
-
-	timestamp.erase();
+	record_number.erase();
+	i++;
 	while (buffer[i] != '|')
-		timestamp += buffer[i++];
-	return timestamp;
+		record_number += buffer[i++];
+
+	record_title.erase();
+	i++;
+	while (buffer[i] != '|')
+		record_title += buffer[i++];
+
+	lawyer.erase();
+	i++;
+	while (buffer[i] != '|')
+		lawyer += buffer[i++];
+	
+	description.erase();
+	while (buffer[i] != '$')
+		description += buffer[i++];
+	
+}
+void CaseRecord::extract_lawyer()
+{
+	lawyer.erase();
+	buffer.erase();
+	int i = 0, count = 1;
+	while(buffer[i++] != '|');
+	while(buffer[i++] != '|');
+	while(buffer[i] != '|')
+		lawyer += buffer[i++];
 }
 void CaseRecord::sort_index()
 {
 	int i, j, temp_address;
-	string temp_Name;
+	string temp;
 
 	for (int i = 0; i <= count; i++)
 	{
 		for (int j = i + 1; j <= count; j++)
 		{
-			if (timestamp_list[i] > timestamp_list[j])
+			if (lawyer_name_list[i] > lawyer_name_list[j])
 			{
-				temp_Name = timestamp_list[i];
-				timestamp_list[i] = timestamp_list[j];
-				timestamp_list[j] = temp_Name;
+				temp = lawyer_name_list[i];
+				lawyer_name_list[i] = lawyer_name_list[j];
+				lawyer_name_list[j] = temp;
 
 				temp_address = address_list[i];
 				address_list[i] = address_list[j];
@@ -112,18 +138,18 @@ int CaseRecord::search_index(string key)
 	{
 		mid = (low + high) / 2;
 
-		if (timestamp_list[mid] == key)
+		if (lawyer_name_list[mid] == key)
 		{
 			flag = 1;
 			break;
 		}
-		if (timestamp_list[mid] > key)
+		if (lawyer_name_list[mid] > key)
 			high = mid - 1;
-		if (timestamp_list[mid] < key)
+		if (lawyer_name_list[mid] < key)
 			low = mid + 1;
 	}
 	if (flag)
-		return mid;
+		return address_list[mid];
 	else
 		return -1;
 }
@@ -138,12 +164,16 @@ void CaseRecord::search(string key)
 			 << "Record not found" << endl;
 	else if (pos >= 0)
 	{
-		file.open("5.txt");
+		file.open("case_file.txt");
 		address = address_list[pos];
 		file.seekp(address, ios::beg);
 		getline(file, buffer);
-		cout << "Record found....\n"
-			 << buffer;
+		cout << "Record found:\n";
+		unpack();
+		cout << "Record Number: " << record_number <<endl;
+		cout << "Record Tile: " << record_title <<endl;
+		cout << "Lawyer: " << lawyer << endl;
+		cout << "Description: " << description << endl;
 		file.close();
 	}
 }
@@ -159,8 +189,9 @@ void CaseRecord::delete_from_file(int pos)
 
 	for (i = pos; i < count; i++)
 	{
-		timestamp_list[i] = timestamp_list[i + 1];
+		// record_number_list[i] = record_number_list[i + 1];
 		address_list[i] = address_list[i + 1];
+		lawyer_name_list[i] = lawyer_name_list[i + 1];
 	}
 	count--;
 }
@@ -169,9 +200,8 @@ void CaseRecord::create_index()
 {
 	fstream file;
 	int pos;
-	string time_stamp;
 	count = -1;
-	file.open("case_record.txt", ios::in);
+	file.open("case_file.txt", ios::in);
 	while (!file.eof())
 	{
 		pos = file.tellg();
@@ -182,10 +212,12 @@ void CaseRecord::create_index()
 		{
 			if (buffer.empty())
 				break;
+			// unpack();
+			extract_lawyer();
+			address_list[++count] = pos;
+			// record_number_list[count] = record_number;
+			lawyer_name_list[count] = lawyer;
 
-			time_stamp = extract_timestamp();
-			timestamp_list[++count] = time_stamp;
-			address_list[count] = pos;
 		}
 	}
 	file.close();
@@ -199,7 +231,7 @@ void CaseRecord::remove(string key)
 	pos = search_index(key);
 	if (pos >= 0)
 	{
-		file.open("5.txt", ios::out | ios::in);
+		file.open("case_file.txt", ios::out | ios::in);
 		address = address_list[pos];
 		file.seekp(address, ios::beg);
 		file.put('*');
@@ -208,7 +240,7 @@ void CaseRecord::remove(string key)
 
 		for (i = pos; i < count; i++)
 		{
-			record_number_list[i] = record_number_list[i + 1];
+			lawyer_name_list[i] = lawyer_name_list[i + 1];
 			address_list[i] = address_list[i + 1];
 		}
 		count--;
@@ -216,3 +248,16 @@ void CaseRecord::remove(string key)
 	else
 		cout << "Record not found\n";
 }
+void CaseRecord::disp()
+{
+	int i;
+	cout << endl
+		 << "INDEX FILE " << endl
+		 << "LAWYER\tADDRESS";
+	for (i = 0; i <= count; i++)
+		cout << endl
+			 << lawyer_name_list[i] << "\t" << address_list[i];
+	cout << "\n";
+	system("cat case_file.txt");
+}
+} // namespace LawFirm
