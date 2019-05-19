@@ -1,3 +1,5 @@
-Litt|Cromwell vs Ross|C01|Attack on Ross due to being a fraud.$
-*pecter|Litt vs State|C01|Litt sues Ross for being a fraud.$
-Ross|Specter vs Pearson|C02|Specter goes up against his mentor for a challenge.$
+Litt|Floras vs Caltech|C01|Floras used a chemically unstable element in their work. Sued by Caltech.$
+Specter|McKernon Motors vs State|C02|McKernon Motors avoids lawsuit by countersuit against the State.$
+Ross|Mathers vs Jensen|C03|Bruce Marshall Mathers sued by Jimmy Jensen for defamation in song.$
+Zane|Jackson vs Rocker|C04|Sean Jackson hit Rocker for a comment made on wife.$
+*heeler|Rivers vs Kent|C04|Kent accused Rivers of copyright infringement. Rivers countersues.$

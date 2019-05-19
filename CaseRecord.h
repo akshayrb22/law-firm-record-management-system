@@ -1,8 +1,9 @@
-#include <iostream>
 #include <fstream>
-#include <string>
+#include <iostream>
 #include <sstream>
 #include <stdlib.h>
+#include <string>
+#include <ncurses.h>
 
 using namespace std;
 namespace LawFirm
@@ -32,17 +33,19 @@ public:
 	string extract_lawyer();
 	void sort_index();
 	void disp();
+	void unpack();
 };
 void CaseRecord::read_data()
 {
-	cin.ignore();
-	cout << "Lawyer: ";
+	std::cin.get();
+	std::cin.clear();
+	std::cout << "Lawyer: ";
 	getline(cin, lawyer, '\n');
-	cout << "Title: ";
+	std::cout << "Title: ";
 	getline(cin, title, '\n');
-	cout << "Code: ";
+	std::cout << "Code: ";
 	getline(cin, code, '\n');
-	cout << "Description: ";
+	std::cout << "Description: ";
 	getline(cin, description, '\n');
 }
 
@@ -75,6 +78,28 @@ string CaseRecord::extract_lawyer()
 	while (buffer[i] != '|')
 		lawyer += buffer[i++];
 	return lawyer;
+}
+void CaseRecord::unpack()
+{
+	int i = 0;
+	lawyer.erase();
+	while (buffer[i] != '|')
+		lawyer += buffer[i++];
+
+	title.erase();
+	i++;
+	while (buffer[i] != '|')
+		title += buffer[i++];
+
+	code.erase();
+	i++;
+	while (buffer[i] != '|')
+		code += buffer[i++];
+
+	description.erase();
+	i++;
+	while (buffer[i] != '$')
+		description += buffer[i++];
 }
 void CaseRecord::create_index()
 {
@@ -126,7 +151,7 @@ void CaseRecord::sort_index()
 	}
 	for (i = 0; i <= count; i++)
 	{
-		cout << lawyer_list[i] << "\t" << address_list[i] << "\n";
+		std::cout << lawyer_list[i] << "\t" << address_list[i] << "\n";
 	}
 }
 
@@ -161,7 +186,7 @@ void CaseRecord::search(string key)
 	buffer.erase();
 	pos = search_index(key);
 	if (pos == -1)
-		cout << endl
+		std::cout << endl
 			 << "Record not found." << endl;
 	else if (pos >= 0)
 	{
@@ -169,8 +194,12 @@ void CaseRecord::search(string key)
 		address = address_list[pos];
 		file.seekp(address, ios::beg);
 		getline(file, buffer);
-		cout << "Record found" << endl
-			 << buffer;
+		unpack();
+		std::cout << "Record found" << endl
+			 << "Lawyer: 	" << lawyer << endl
+			 << "Title: 		" << title << endl
+			 << "Case Code: 	" << code << endl
+			 << "Description: 	" << description << endl;
 		file.close();
 	}
 }
@@ -187,7 +216,7 @@ void CaseRecord::remove(string key)
 		file.seekp(address, ios::beg);
 		file.put('*');
 		file.close();
-		cout << "\nRecord Deleted: ";
+		std::cout << "\nRecord Deleted: ";
 
 		for (i = pos; i < count; i++)
 		{
@@ -197,18 +226,18 @@ void CaseRecord::remove(string key)
 		count--;
 	}
 	else
-		cout << "record not found\n";
+		std::cout << "Record not found\n";
 }
 void CaseRecord::disp()
 {
 	int i;
-	cout << endl
+	std::cout << endl
 		 << "INDEX FILE " << endl
 		 << "LAWYER\tADDRESS";
 	for (i = 0; i <= count; i++)
-		cout << endl
+		std::cout << endl
 			 << lawyer_list[i] << "\t" << address_list[i];
-	cout << "\n";
-	system("cat case_file.txt");
+	std::cout << "\n";
 }
+
 } // namespace LawFirm
