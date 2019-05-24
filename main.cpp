@@ -31,47 +31,45 @@ main()
 	scroll_note();
 
 	CaseRecord caseRecord;
-	// system("figlet -cf big Law Firm Record Management System");
-
 	caseRecord.create_index();
-	int choice, count;
+	int choice, count, mod_choice;
 	string key;
 	while (1)
 	{
-		std::cout << "\nMain Menu\n\n1.Add \t2.Search \t3.Delete\t4.Exit\n";
+		std::cout << "\nMain Menu\n\n1. Add\t2. Search\t3. Delete\t4. Modify\t5. Exit\n";
 		std::cout << "Enter the choice:";
 		cin >> choice;
 		switch (choice)
 		{
 			case 1:
-				std::cout << "\nEnter the number of records to insert:";
-				cin >> count;
-				for (int i = 0; i < count; i++)
-				{
-					std::cout << "Data\n";
-					caseRecord.read_data();
-					caseRecord.pack();
-					caseRecord.write_to_file();
-				}
+				std::cout << "Data Entry\n";
+				caseRecord.read_data();
+				caseRecord.pack();
+				caseRecord.write_to_file();
 				break;
 			case 2:
-				// system("clear");
 				caseRecord.disp();
-				std::cout << "\nEnter the name of the lawyer:";
+				std::cout << "\nEnter the name of the lawyer whose details you want to view: ";
 				cin >> key;
 				caseRecord.search(key);
 				break;
 			case 3:
-				std::cout << "\nEnter the name:";
+				std::cout << "\nEnter the name of the lawyer whose details you want to delete: ";
 				cin >> key;
-				caseRecord.remove(key);
+				if(caseRecord.remove(key)) std::cout << "Record deleted.";
+				else std::cout << "Record not found.";
 				break;
 			case 4:
+				std::cout << "Enter the name of the lawyer whose details you want to modify: ";
+				cin >> key;
+				caseRecord.modify(key);
+				std::cout << "Case Record modified.";
+				break;
+			case 5:
 				return 0;
 			default:
 				std::cout << "\n\nWrong choice\n";
 				break;
 		}
 	}
-	endwin();
 }
