@@ -26,7 +26,7 @@ void scroll_note() //welcome note
 	getch();
 	endwin();
 }
-main()
+int main()
 {
 	scroll_note();
 

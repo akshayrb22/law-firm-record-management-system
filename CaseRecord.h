@@ -192,7 +192,7 @@ int CaseRecord::search(string key)
 				  << "Record not found." << endl;
 		return -1;
 	}
-	else if (pos >= 0)
+	else
 	{
 		file.open("case_file.txt");
 		address = address_list[pos];
