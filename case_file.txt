@@ -8,4 +8,7 @@ Zane|Jackson vs Rocker|C04|Sean Jackson hit Rocker for a comment made on wife.$
 *urdock|Fisk vs State|C10|Fisk robs Daily Bugle. Mayor JJJ presses charges.$
 *heeler|Specter vs Malik|C11|Andrew Malik tried to make a scapegoat out of Harvey Spector on the Apollo Creed case.$
 Murdock|Fisk vs State|C05|Fisk robs Daily Bugle. Mayor JJJ presses charges.$
-Walters|Rogers vs Scott|C06|Rogers and Scott had a disagreement regarding the Phoenix Force and Jean Grey's existence.$
+*alters|Rogers vs Scott|C06|Rogers and Scott had a disagreement regarding the Phoenix Force and Jean Grey's existence.$
+*om|Mitchell vs Jackson|C12|In this case Mitchell has an arguement with Jackson regarding property.$
+Harshith|Sean vs Rodney|C12|ksjfnsdkf$
+Walters|Rogers vs Scott|C13|Rogers and Scott had a disagreement regarding the Phoenix Force and Jean Grey's existence.$
