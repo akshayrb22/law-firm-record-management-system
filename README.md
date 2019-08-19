@@ -1,5 +1,5 @@
 # law-firm-record-management-system ⚖️
-This is a repositiory which contains my File Structures Mini Project for the File Structures Laboratory With Mini Project in C++.
+This is a repository which contains my File Structures Mini Project for the File Structures Laboratory With Mini Project in C++.
 
 It has minimal features and implements the following simple methods: 
 
@@ -10,8 +10,12 @@ It has minimal features and implements the following simple methods:
 * ```remove()``` - removes the record from the index and subsequently the file.
 * ```search()``` - searches the index for the record and retrieves it using the index.
 * ```search_index()``` - basic implementation of binary search.
-* ```extrct_lawyer()``` - extracts the lawyer name from the packed record 
+* ```extract_lawyer()``` - extracts the lawyer name from the packed record 
 * ```sort_index()``` - sorts the index based on the lawyer name.
 * ```disp()``` - a small method to display all the lawyers and the addresses in the record. Not to be implemented in an professional version of app.
-* ```unpack()``` - method to extract all the fields from a record separated using a delimeter.
+* ```unpack()``` - method to extract all the fields from a record separated using a delimiter.
 * ```modify()``` - method to change a particular field in a record entry.
+## Requirements
+To add a little bit of flair to it, I made use of ```figlet``` to have a CLI banner. 😀 <br>
+Install it using 
+    ```$ sudo apt install figlet``` 
